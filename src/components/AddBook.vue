@@ -145,7 +145,7 @@
             },
 
             saveBook(bookObj){
-                axios.post(process.env.ROOT_API+'/create', bookObj)
+                axios.post(process.env.ROOT_API+'create', bookObj)
                 .then((res) => {
                     this.$router.push('/');
                 }).catch(error=>{
@@ -158,7 +158,7 @@
             },
 
             updateBook(bookObj){
-                axios.put(process.env.ROOT_API+'/update/'+this.$route.params.id, bookObj)
+                axios.put(process.env.ROOT_API+'update/'+this.$route.params.id, bookObj)
                 .then((res) => {
                     console.log(res)
                     this.$router.push('/');
