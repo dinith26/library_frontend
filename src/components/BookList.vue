@@ -2,7 +2,7 @@
     <div class="container">
         <div class="card card-outline card-dark mt-5">
             <div class="card-header">
-                <h3 class="card-title">Products {{VUE_APP_API_URL}}</h3>
+                <h3 class="card-title">Book List</h3>
                 <router-link class="btn btn-primary btn-sm float-right" :to="{ path: '/book/new/'}" replace>Add New Book</router-link>
             </div>
             <div class="card-body">
