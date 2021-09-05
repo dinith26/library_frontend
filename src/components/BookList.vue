@@ -38,10 +38,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="book in list" v-bind:key="book.id">
+                        <tr v-for="book in list" v-bind:key="book.id" v-if="has_data">
                             <Record v-bind:book="book" />
                         </tr>
                     </tbody>
+                    <div v-if="!has_data">
+                        {{error_message}}
+                    </div>
                 </table>
             </div>
         </div>
@@ -70,23 +73,37 @@ export default {
             search_auth: "",
             filter_list: undefined,
             filter_type: undefined,
-            filter_param: undefined
+            filter_param: undefined,
+            has_data: false,
+            error_message: undefined,
         }
     },
     methods: {
         async getList() {
             Vue.axios.get(process.env.ROOT_API+'list')
             .then((res) => {
-                this.list = res.data.data;
-                this.fresh_list = res.data.data;
+                if(res.data && res.data.status == "success"){
+                    this.list = res.data.data;
+                    this.fresh_list = res.data.data;
+                    this.has_data = true;
+                }else{
+                    this.error_message = res.data.data.message;
+                    this.has_data = false;
+                }
             })
         },
 
-        // Search by Title was done by frontend filtering
+        // Title search was done by frontend filtering
         searchByTitle(){
             this.filter_list = this.fresh_list.filter(lst =>
                 lst.title.toLowerCase().includes(this.search_title.toLowerCase())
             );
+            if(this.filter_list.length == 0){
+                this.error_message = "Data not found";
+                this.has_data = false;
+            }else{
+                this.has_data = true;
+            }
             this.list = this.filter_list;
         },
 
@@ -108,8 +125,15 @@ export default {
             }
             Vue.axios.get(process.env.ROOT_API+'search/'+this.filter_type+'/'+this.filter_param)
             .then((res) => {
-                this.list = res.data.data;
-                this.fresh_list = res.data.data;
+                if(res.data.data.length == 0){
+                    this.has_data = false;
+                    this.error_message = "Data not found";
+                }else{
+                    this.list = res.data.data;
+                    this.fresh_list = res.data.data;
+                    this.has_data = true;
+                }
+
             })
         }
     },
