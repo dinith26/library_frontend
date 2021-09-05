@@ -53,7 +53,11 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="availability">Availability</label>
-                                <input type="text" v-model="availability" class="form-control" placeholder="Availability">
+                                <select v-model="availability" class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
                             </div>
                         </div>
                     </div>
